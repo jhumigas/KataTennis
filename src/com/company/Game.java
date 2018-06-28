@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.List;
+
 /**
  *  Proposition for the KataTennis
  */
@@ -7,10 +9,11 @@ public class Game {
 
     private String playerOne;
     private String playerTwo;
+    private int countsOne;
+    private int countsTwo;
     private int pointsOne;
     private int pointsTwo;
-    private int kataPointsOne;
-    private int kataPointsTwo;
+    private List<Integer> pointsValues = List.of(0, 15, 30, 40);
 
     /**
      * Simple Getter
@@ -32,42 +35,52 @@ public class Game {
      *
      * @return playerOne's points
      */
-    public int getPointsPlayerOne(){
-        return pointsOne;
+    public int getCountsPlayerOne(){
+        return countsOne;
     }
 
     /**
      *
      * @return playerTwo's points
      */
-    public int getPointsPlayerTwo(){
-        return pointsTwo;
+    public int getCountsPlayerTwo(){
+        return countsTwo;
     }
 
     /**
      * Set both of the points of the players
-     * @param pointsOne Player's one points
-     * @param pointsTwo Players's two points
+     * @param countsOne Player's one points
+     * @param countsTwo Players's two points
      */
-    public void setPoints(int pointsOne, int pointsTwo){
-        this.pointsOne = pointsOne;
-        this.pointsTwo = pointsTwo;
+    public void setCounts(int countsOne, int countsTwo){
+        this.countsOne = countsOne;
+        this.countsTwo = countsTwo;
     }
 
     /**
      * Set points of playerOne
      * @param points New values of points
      */
-    public void setPointsPlayerOne(int points) {
-        pointsOne = points;
+    public void setCountsPlayerOne(int points) {
+        countsOne = points;
     }
 
     /**
      * Set points of playerTwo
      * @param points New values of points
      */
-    public void setPointsPlayerTwo(int points) {
-        pointsTwo = points;
+    public void setCountsPlayerTwo(int points) {
+        countsTwo = points;
+    }
+
+    public int getPointsPlayerOne(){
+        updateScores();
+        return this.pointsOne;
+    }
+
+    public int getPointsPlayerTwo(){
+        updateScores();
+        return this.pointsTwo;
     }
 
     /**
@@ -79,7 +92,7 @@ public class Game {
     public Game(){
         this.playerOne = "Player1";
         this.playerTwo = "Player2";
-        this.initiatePoints();
+        this.initiateCounts();
     }
 
     /**
@@ -90,15 +103,15 @@ public class Game {
     public Game(String playerOne, String playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        this.initiatePoints();
+        this.initiateCounts();
     }
 
     /**
      * Initiate points to 0
      */
-    public void initiatePoints(){
-        this.pointsOne = 0;
-        this.pointsTwo = 0;
+    public void initiateCounts(){
+        this.countsOne = 0;
+        this.countsTwo = 0;
     }
 
     /**
@@ -109,7 +122,7 @@ public class Game {
     public int whoWon(){
         int winner;
         if(this.isTheGameOver()){
-            winner = pointsOne > pointsTwo ? 0:1;
+            winner = countsOne > countsTwo ? 0:1;
             String winnerName = winner==0?this.playerOne:this.playerTwo;
             System.out.println("Woooow, player "+ winnerName + " is the winner.");
         }else{
@@ -124,7 +137,7 @@ public class Game {
      * @return boolean True if the game is over
      */
     public boolean isTheGameOver(){
-        return (this.pointsOne >=4 || this.pointsTwo>=4) && Math.abs(this.pointsOne - this.pointsTwo) >=2;
+        return (this.countsOne >=4 || this.countsTwo>=4) && Math.abs(this.countsOne - this.countsTwo) >=2;
     }
 
     /**
@@ -135,17 +148,17 @@ public class Game {
      */
     public void setBallWinner(boolean choice){
         if(choice){
-            pointsOne++;
+            countsOne++;
             System.out.println("Player " + playerOne + " has won.");
         }else{
-            pointsTwo++;
+            countsTwo++;
             System.out.println("Player " + playerTwo + " has won.");
         }
     }
-    
+
 
     public void printScores(){
-        if(pointsOne >= 3 && this.pointsTwo >=3){
+        if(countsOne >= 3 && this.countsTwo >=3){
             if(isScoreDeuce()){
                 System.out.println("Score is: ADV -- ADV (deuce)");
             }else{
@@ -158,19 +171,31 @@ public class Game {
             }
         }else{
             if(!isTheGameOver()) {
-                System.out.println("Score is: " + pointsToScore(pointsOne) + " -- " + pointsToScore(pointsTwo));
+                System.out.println("Score is: " + pointsToScore(countsOne) + " -- " + pointsToScore(countsTwo));
+            }
+        }
+    }
+
+    public void updateScores(){
+        if(countsOne >= 3 && this.countsTwo >=3){
+            this.pointsOne = 40;
+            this.pointsTwo = 40;
+        }else{
+            if(!isTheGameOver()) {
+                this.pointsOne = countsOne>=0? pointsValues.get(countsOne): 0;
+                this.pointsTwo = countsTwo>=0? pointsValues.get(countsTwo): 0;
             }
         }
     }
 
     /**
      * Map points of a single player to score love, fifteen and thirty and forty;
-     * @param numPoints
+     * @param numCounts
      * @return Name of the score (as described in wikipedia)
      */
-    public static String pointsToScore(int numPoints){
+    public static String pointsToScore(int numCounts){
         String score;
-        switch(numPoints) {
+        switch(numCounts) {
             case 0:
                 score = "love";
                 break;
@@ -197,7 +222,7 @@ public class Game {
      * @return True
      */
     public boolean isScoreDeuce(){
-        return pointsOne>=3 && pointsTwo>=3 && pointsOne==pointsTwo;
+        return countsOne>=3 && countsTwo>=3 && countsOne==countsTwo;
     }
 
     /**
@@ -206,8 +231,8 @@ public class Game {
      */
     public int whichPlayerhasAnAdvantage (){
         int playerNum;
-        if(pointsOne>=3 && pointsTwo>=3 && pointsOne!=pointsTwo){
-            playerNum = pointsOne>pointsTwo ? 0:1;
+        if(countsOne>=3 && countsTwo>=3 && countsOne!=countsTwo){
+            playerNum = countsOne>countsTwo ? 0:1;
             String playerName = playerNum==0? playerOne:playerTwo;
         }else{
             playerNum = -1;
