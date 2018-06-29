@@ -246,6 +246,7 @@ public class Game {
      */
     public void simulateGame(int n){
         int j=0;
+        System.out.println("This Game will be played by " + this.playerOne + " and "+ this.playerTwo);
         while(this.whoWon()<0 && j<n){
             System.out.println(j + " -----------------------------------");
             setBallWinner(Math.random()>0.5);
