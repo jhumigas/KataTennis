@@ -13,11 +13,8 @@ I used IntelliJ to write code, which you can get [here](https://www.jetbrains.co
 
 ### Running
 
-Open in a terminal a run
-
-```
-java -classpath ./out/production/KataTennis com.company.Main
-```
+You can use IntelliJ directly. 
+Or use `javac` (compilation) and `java`(interpreting and running) commands.
 
 ### Test
 
