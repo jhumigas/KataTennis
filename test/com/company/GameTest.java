@@ -45,7 +45,7 @@ public class GameTest {
         assertEquals(1, tester.whichPlayerhasAnAdvantage());
     }
 
-    @Test public void printScores(){
+    @Test public void printScoresTest(){
         Game tester = new Game();
         tester.setCounts(6, 7);
         tester.printScores();
@@ -55,7 +55,7 @@ public class GameTest {
         tester.printScores();
     }
 
-    @Test public void updateScores(){
+    @Test public void updateScoresTest(){
         Game tester = new Game();
         tester.setCounts(7,8);
         tester.updateScores();
@@ -67,6 +67,13 @@ public class GameTest {
         tester.setCounts(-1,-1);
         assertEquals(0, tester.getPointsPlayerOne());
         assertEquals(0, tester.getPointsPlayerTwo());
+    }
+
+    @Test public void simulateTest(){
+        Game tester = new Game();
+        int nRounds = 10;
+        tester.simulateGame(nRounds);
+        assertTrue(nRounds >= tester.getCountsPlayerOne());
     }
 
 
